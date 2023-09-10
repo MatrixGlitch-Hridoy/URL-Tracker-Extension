@@ -1,5 +1,5 @@
 chrome.storage.local.get({ urls: [] }, (result) => {
-  const urlList = document.getElementById("urlList");
+  const urlTableBody = document.getElementById("urlTableBody");
 
   // Function to remove a URL entry
   const removeUrl = (url) => {
@@ -15,31 +15,36 @@ chrome.storage.local.get({ urls: [] }, (result) => {
     });
   };
 
-  // Display the list of visited URLs with remove buttons
+  // Display the list of visited URLs with remove buttons and timestamps
   result.urls.forEach((entry) => {
-    const li = document.createElement("li");
-    li.setAttribute("data-url", entry.url); // Add data attribute for identification
-
+    // Create a new row for each entry
+    const row = document.createElement("tr");
+    // URL cell
+    const urlCell = document.createElement("td");
     const a = document.createElement("a");
     a.href = entry.url;
     a.textContent = entry.url;
     a.target = "_blank";
+    urlCell.appendChild(a);
+    row.appendChild(urlCell);
 
+    // Timestamp cell
+    const timestampCell = document.createElement("td");
     const timestamp = new Date(entry.timestamp).toLocaleString();
-    const timestampSpan = document.createElement("span");
-    timestampSpan.textContent = timestamp;
-    timestampSpan.classList.add("timestamp");
+    timestampCell.textContent = timestamp;
+    row.appendChild(timestampCell);
 
-    // Create a remove button
+    // Action cell
+    const actionCell = document.createElement("td");
     const removeButton = document.createElement("button");
     removeButton.textContent = "Remove";
     removeButton.addEventListener("click", () => {
       removeUrl(entry.url);
     });
+    actionCell.appendChild(removeButton);
+    row.appendChild(actionCell);
 
-    li.appendChild(a);
-    li.appendChild(timestampSpan);
-    li.appendChild(removeButton);
-    urlList.appendChild(li);
+    // Add the row to the table body
+    urlTableBody.appendChild(row);
   });
 });
