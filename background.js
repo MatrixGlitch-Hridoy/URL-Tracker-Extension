@@ -10,49 +10,11 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   }
 });
 
-// function addUrlToStorage(url) {
-//   chrome.storage.local.get({ urls: [] }, (result) => {
-//     const updatedUrls = [...result.urls, { url, timestamp: Date.now() }];
-//     chrome.storage.local.set({ urls: updatedUrls });
-//     console.log("URL saved in extension storage:", url);
-//   });
-// }
-
 // Function to extract the domain from a URL
 function extractDomain(url) {
   const match = url.match(/^(https?:\/\/(?:www\.)?[^\/]+)/);
   return match ? match[1] : null;
 }
-
-// function addUrlToStorage(url) {
-//   const domain = extractDomain(url);
-
-//   chrome.storage.local.get({ urls: [] }, (result) => {
-//     const existingUrls = result.urls;
-
-//     // Check if the domain already exists in the stored URLs
-//     const domainExists = existingUrls.some((item) => item.url === domain);
-//     console.log("domain exits", domainExists);
-
-//     if (!domainExists) {
-//       const updatedUrls = [
-//         ...existingUrls,
-//         { url: domain, timestamp: Date.now(), count: 0 },
-//       ];
-//       chrome.storage.local.set({ urls: updatedUrls });
-//       console.log("Domain saved in extension storage:", domain);
-//     } else {
-//       let index = existingUrls.findIndex((item) => item.url === domain);
-//       if (index !== -1) {
-//         // Update the count property if a matching URL is found
-//         chrome.storage.local.set({
-//           urls: (existingUrls[index].count += 1),
-//         });
-//       }
-//       console.log("Domain already exists in extension storage:", domain);
-//     }
-//   });
-// }
 
 function addUrlToStorage(url) {
   const domain = extractDomain(url);
